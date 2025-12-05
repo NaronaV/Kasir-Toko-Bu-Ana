@@ -14,5 +14,3 @@ router.put("/:id", updateBarang);
 router.delete("/:id", hapusBarang);
 
 module.exports = router;
-console.log("Barang route loaded!");
-
