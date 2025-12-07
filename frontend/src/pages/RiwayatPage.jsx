@@ -169,7 +169,7 @@ export default function RiwayatPage() {
                     </td>
                     <td style={{ textAlign: 'center' }}>
                       <button
-                        onClick={() => window.open(`/cetak-nota/${transaksi._id}`, '_blank')}
+                        onClick={() => window.open(`${api.defaults.baseURL.replace('/api','')}/api/transaksi/${transaksi._id}/cetak`, '_blank')}
                         style={{
                           background: '#2563eb',
                           color: 'white',
