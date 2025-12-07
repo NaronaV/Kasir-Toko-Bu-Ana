@@ -1,109 +1,123 @@
-// src/pages/RiwayatPage.jsx
-import { useState, useEffect } from "react";
-import api from "../services/api";
-import Navbar from "../components/Navbar";
+import { useNavigate } from 'react-router-dom';
+import Navbar from '../components/Navbar';
 
-export default function RiwayatPage() {
-  const [riwayat, setRiwayat] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+export default function HomePage() {
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    api
-      .get("/riwayat")
-      .then((response) => {
-        setRiwayat(response.data || []);
-        setError(null);
-      })
-      .catch((err) => {
-        console.error("Gagal load riwayat:", err);
-        setError("Gagal memuat data. Pastikan backend jalan di http://localhost:5000");
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
-
-  if (loading) {
-    return (
-      <>
-        <Navbar title="RIWAYAT PENJUALAN" showBack showSearch />
-        <div style={{ padding: "20px" }}>Loading riwayat transaksi...</div>
-      </>
-    );
-  }
+  const menuItems = [
+    {
+      id: 1,
+      title: 'Kasir',
+      icon: '💳',
+      path: '/transaksi',
+      color: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      description: 'Proses penjualan barang'
+    },
+    {
+      id: 2,
+      title: 'Data Barang',
+      icon: '📦',
+      path: '/barang',
+      color: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+      description: 'Kelola stok barang'
+    },
+    {
+      id: 3,
+      title: 'Riwayat',
+      icon: '📋',
+      path: '/riwayat',
+      color: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+      description: 'Lihat riwayat transaksi'
+    },
+    {
+      id: 4,
+      title: 'Rekap',
+      icon: '📊',
+      path: '/rekap',
+      color: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+      description: 'Laporan penjualan'
+    }
+  ];
 
   return (
     <>
-      <Navbar title="RIWAYAT PENJUALAN" showBack showSearch />
+      <Navbar title="Dashboard Toko Ana" />
+      
+      <div style={{ padding: '40px 20px', background: '#f5f7fa', minHeight: 'calc(100vh - 70px)' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          {/* Welcome Section */}
+          <div style={{ marginBottom: '40px', textAlign: 'center' }}>
+            <h1 style={{ fontSize: '32px', color: '#1f2937', marginBottom: '10px', fontWeight: '700' }}>
+              Selamat Datang di Toko Bu Ana
+            </h1>
+            <p style={{ fontSize: '16px', color: '#6b7280' }}>
+              Sistem Kasir dan Manajemen Inventory Terpadu
+            </p>
+          </div>
 
-      <div style={{ padding: "20px", maxWidth: "1000px", margin: "0 auto" }}>
-        {error ? (
-          <p style={{ color: "red" }}>{error}</p>
-        ) : riwayat.length === 0 ? (
-          <p>Tidak ada transaksi.</p>
-        ) : (
-          <table
-            style={{
-              width: "100%",
-              borderCollapse: "collapse",
-              fontSize: "14px",
-              boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
-              borderRadius: "8px",
-              overflow: "hidden",
-            }}
-          >
-            <thead>
-              <tr style={{ backgroundColor: "#6c9ed7", color: "white" }}>
-                <th style={thStyle}>No</th>
-                <th style={thStyle}>Tanggal</th>
-                <th style={thStyle}>Pembeli</th>
-                <th style={thStyle}>Nama Barang</th>
-                <th style={thStyle}>Item</th>
-                <th style={thStyle}>Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              {riwayat.map((transaksi, index) => (
-                <tr key={transaksi._id || index} style={{ backgroundColor: "#f9f9f9" }}>
-                  <td style={tdStyle}>{index + 1}</td>
-                  <td style={tdStyle}>
-                    {new Date(transaksi.tanggal).toLocaleString("id-ID")}
-                  </td>
-                  <td style={tdStyle}>-</td> {/* Bisa diisi nanti jika backend kirim nama pembeli */}
-                  <td style={tdStyle}>
-                    {transaksi.items?.map((item, i) => (
-                      <div key={i}>{item.nama || "Barang"}</div>
-                    ))}
-                  </td>
-                  <td style={tdStyle}>
-                    {transaksi.items?.map((item, i) => (
-                      <div key={i}>{item.jumlah}</div>
-                    ))}
-                  </td>
-                  <td style={tdStyle}>
-                    Rp {transaksi.total?.toLocaleString() || 0}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+          {/* Menu Grid */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+            gap: '24px',
+            marginBottom: '40px'
+          }}>
+            {menuItems.map((item) => (
+              <div
+                key={item.id}
+                onClick={() => navigate(item.path)}
+                style={{
+                  background: item.color,
+                  borderRadius: '16px',
+                  padding: '32px 24px',
+                  cursor: 'pointer',
+                  color: 'white',
+                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                  transition: 'all 0.3s ease',
+                  transform: 'translateY(0)',
+                  textDecoration: 'none',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-8px)';
+                  e.currentTarget.style.boxShadow = '0 12px 24px rgba(0, 0, 0, 0.2)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
+                }}
+              >
+                <div style={{ fontSize: '48px', marginBottom: '16px', textAlign: 'center' }}>
+                  {item.icon}
+                </div>
+                <h3 style={{ fontSize: '20px', fontWeight: '700', marginBottom: '8px', textAlign: 'center' }}>
+                  {item.title}
+                </h3>
+                <p style={{ fontSize: '14px', opacity: '0.9', textAlign: 'center' }}>
+                  {item.description}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {/* Info Section */}
+          <div style={{
+            background: 'white',
+            borderRadius: '12px',
+            padding: '24px',
+            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)'
+          }}>
+            <h3 style={{ color: '#1f2937', marginBottom: '16px', fontSize: '18px', fontWeight: '600' }}>
+              📌 Panduan Penggunaan
+            </h3>
+            <ul style={{ color: '#4b5563', lineHeight: '1.8', fontSize: '14px' }}>
+              <li><strong>Kasir:</strong> Gunakan untuk mencatat penjualan dan mencetak nota</li>
+              <li><strong>Data Barang:</strong> Tambah, edit, atau hapus data produk yang dijual</li>
+              <li><strong>Riwayat:</strong> Lihat semua transaksi yang telah dilakukan</li>
+              <li><strong>Rekap:</strong> Analisis penjualan dan laporan keuangan harian/bulanan</li>
+            </ul>
+          </div>
+        </div>
       </div>
     </>
   );
 }
-
-// === Styling Reusable ===
-const thStyle = {
-  padding: "12px 10px",
-  textAlign: "left",
-  fontWeight: "bold",
-};
-
-const tdStyle = {
-  padding: "12px 10px",
-  textAlign: "left",
-  verticalAlign: "top",
-  borderBottom: "1px solid #eee",
-};
