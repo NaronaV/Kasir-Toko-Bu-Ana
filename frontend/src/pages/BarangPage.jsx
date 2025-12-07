@@ -123,145 +123,137 @@ export default function BarangPage() {
 
   return (
     <>
-      <Navbar title="STOK BARANG" showBack />
+      <Navbar title="Data Barang" showBack />
 
-      <div style={{ padding: "20px", maxWidth: "1000px", margin: "0 auto" }}>
+      <div style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto', background: '#f8fafc', minHeight: 'calc(100vh - 70px)' }}>
         {/* Form Tambah/Edit */}
-        <div
-          style={{
-            backgroundColor: "#f9f9f9",
-            padding: "20px",
-            borderRadius: "8px",
-            marginBottom: "20px",
-            border: "1px solid #eee",
-          }}
-        >
-          <h3 style={{ margin: "0 0 15px" }}>
-            {isEditing ? "Edit Barang" : "Tambah Barang Baru"}
+        <div style={{
+          background: 'white',
+          padding: '24px',
+          borderRadius: '12px',
+          marginBottom: '24px',
+          border: '1px solid #e2e8f0',
+          boxShadow: '0 1px 3px rgba(0, 0, 0, 0.08)'
+        }}>
+          <h3 style={{ marginBottom: '20px', color: '#1e293b', fontSize: '18px', fontWeight: '600' }}>
+            {isEditing ? '✏️ Edit Barang' : '➕ Tambah Barang'}
           </h3>
 
           <form onSubmit={handleSubmit}>
-            {/* Nama Barang */}
-            <div style={{ marginBottom: "10px" }}>
-              <input
-                type="text"
-                name="nama"
-                placeholder="Nama barang"
-                value={form.nama}
-                onChange={handleChange}
-                required
-                style={{ width: "100%", padding: "6px" }}
-              />
-            </div>
-
-            {/* Tipe Harga */}
-            <div style={{ marginBottom: "10px", display: "flex", gap: "15px" }}>
-              <label>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
+              {/* Nama Barang */}
+              <div>
+                <label style={{ display: 'block', marginBottom: '6px', fontWeight: '500', fontSize: '14px', color: '#1e293b' }}>
+                  Nama Barang
+                </label>
                 <input
-                  type="radio"
-                  name="typeHarga"
-                  value="fixed"
-                  checked={form.typeHarga === "fixed"}
+                  type="text"
+                  name="nama"
+                  placeholder="Contoh: Bumbu Rampe"
+                  value={form.nama}
                   onChange={handleChange}
-                />{" "}
-                Harga Tetap
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="typeHarga"
-                  value="range"
-                  checked={form.typeHarga === "range"}
-                  onChange={handleChange}
-                />{" "}
-                Rentang Harga
-              </label>
-            </div>
+                  required
+                  style={{ width: '100%' }}
+                />
+              </div>
 
-            {/* Input Harga */}
-            {form.typeHarga === "fixed" ? (
-              <div style={{ marginBottom: "10px" }}>
+              {/* Stok */}
+              <div>
+                <label style={{ display: 'block', marginBottom: '6px', fontWeight: '500', fontSize: '14px', color: '#1e293b' }}>
+                  Stok
+                </label>
                 <input
                   type="number"
-                  name="harga"
-                  placeholder="Harga (Rp)"
-                  value={form.harga}
+                  name="stok"
+                  placeholder="0"
+                  value={form.stok}
                   onChange={handleChange}
                   required
                   min="0"
-                  style={{ width: "100%", padding: "6px" }}
                 />
               </div>
-            ) : (
-              <>
-                <div style={{ marginBottom: "8px" }}>
-                  <input
-                    type="number"
-                    name="hargaMin"
-                    placeholder="Harga Min (Rp)"
-                    value={form.hargaMin}
-                    onChange={handleChange}
-                    required
-                    min="0"
-                    style={{ width: "100%", padding: "6px" }}
-                  />
-                </div>
-                <div style={{ marginBottom: "10px" }}>
-                  <input
-                    type="number"
-                    name="hargaMax"
-                    placeholder="Harga Max (Rp)"
-                    value={form.hargaMax}
-                    onChange={handleChange}
-                    required
-                    min="0"
-                    style={{ width: "100%", padding: "6px" }}
-                  />
-                </div>
-              </>
-            )}
 
-            {/* Stok */}
-            <div style={{ marginBottom: "15px" }}>
-              <input
-                type="number"
-                name="stok"
-                placeholder="Stok"
-                value={form.stok}
-                onChange={handleChange}
-                required
-                min="0"
-                style={{ width: "100%", padding: "6px" }}
-              />
+              {/* Tipe Harga */}
+              <div>
+                <label style={{ display: 'block', marginBottom: '6px', fontWeight: '500', fontSize: '14px', color: '#1e293b' }}>
+                  Tipe Harga
+                </label>
+                <select
+                  name="typeHarga"
+                  value={form.typeHarga}
+                  onChange={handleChange}
+                  style={{ width: '100%' }}
+                >
+                  <option value="fixed">Harga Tetap</option>
+                  <option value="range">Rentang Harga</option>
+                </select>
+              </div>
+
+              {/* Input Harga */}
+              {form.typeHarga === 'fixed' ? (
+                <div>
+                  <label style={{ display: 'block', marginBottom: '6px', fontWeight: '500', fontSize: '14px', color: '#1e293b' }}>
+                    Harga (Rp)
+                  </label>
+                  <input
+                    type="number"
+                    name="harga"
+                    placeholder="100000"
+                    value={form.harga}
+                    onChange={handleChange}
+                    required
+                    min="0"
+                  />
+                </div>
+              ) : (
+                <>
+                  <div>
+                    <label style={{ display: 'block', marginBottom: '6px', fontWeight: '500', fontSize: '14px', color: '#1e293b' }}>
+                      Harga Min (Rp)
+                    </label>
+                    <input
+                      type="number"
+                      name="hargaMin"
+                      placeholder="Minimum"
+                      value={form.hargaMin}
+                      onChange={handleChange}
+                      required
+                      min="0"
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', marginBottom: '6px', fontWeight: '500', fontSize: '14px', color: '#1e293b' }}>
+                      Harga Max (Rp)
+                    </label>
+                    <input
+                      type="number"
+                      name="hargaMax"
+                      placeholder="Maximum"
+                      value={form.hargaMax}
+                      onChange={handleChange}
+                      required
+                      min="0"
+                    />
+                  </div>
+                </>
+              )}
             </div>
 
             {/* Tombol */}
-            <div style={{ display: "flex", gap: "10px" }}>
+            <div style={{ display: 'flex', gap: '12px', marginTop: '20px' }}>
               <button
                 type="submit"
-                style={{
-                  backgroundColor: "#28a745",
-                  color: "white",
-                  border: "none",
-                  padding: "8px 16px",
-                  borderRadius: "4px",
-                  cursor: "pointer",
-                }}
+                className="btn-success"
+                style={{ padding: '10px 20px' }}
               >
-                {isEditing ? "Simpan" : "Tambah"}
+                {isEditing ? '✓ Simpan' : '+ Tambah'}
               </button>
               {isEditing && (
                 <button
                   type="button"
                   onClick={resetForm}
-                  style={{
-                    backgroundColor: "#6c757d",
-                    color: "white",
-                    border: "none",
-                    padding: "8px 16px",
-                    borderRadius: "4px",
-                    cursor: "pointer",
-                  }}
+                  className="btn-secondary"
+                  style={{ padding: '10px 20px' }}
                 >
                   Batal
                 </button>
@@ -272,7 +264,23 @@ export default function BarangPage() {
 
         {/* Tabel Barang */}
         {error ? (
-          <p style={{ color: "red" }}>{error}</p>
+          <div className="error-message">{error}</div>
+        ) : loading ? (
+          <div style={{ textAlign: 'center', padding: '40px', color: '#64748b' }}>
+            Memuat data barang...
+          </div>
+        ) : barang.length === 0 ? (
+          <div style={{
+            background: 'white',
+            padding: '40px',
+            borderRadius: '12px',
+            textAlign: 'center',
+            color: '#64748b',
+            border: '1px solid #e2e8f0'
+          }}>
+            <div style={{ fontSize: '32px', marginBottom: '8px' }}>📦</div>
+            <p>Belum ada data barang. Tambahkan barang baru untuk memulai.</p>
+          </div>
         ) : (
           <TabelBarang
             barang={barang}

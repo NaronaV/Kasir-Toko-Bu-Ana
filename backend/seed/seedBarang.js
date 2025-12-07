@@ -1,9 +1,9 @@
 
 const mongoose = require("mongoose");
 const Barang = require("../models/Barang");
-require("dotenv").config();
+require("dotenv").config({ path: require("path").join(__dirname, "../.env") });
 
-const uri = process.env.MONGO_URI;
+const uri = process.env.MONGO_URI || "mongodb://localhost:27017/toko_buana";
 console.log("MONGO_URI =", uri); // debug
 
 const dataBarang = [

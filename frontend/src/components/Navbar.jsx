@@ -10,12 +10,12 @@ export default function Navbar({ title, showBack = false, showSearch = false }) 
   return (
     <header
       style={{
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        padding: '16px 24px',
+        background: '#2563eb',
+        padding: '14px 24px',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
         position: 'sticky',
         top: 0,
         zIndex: 100,
@@ -26,32 +26,37 @@ export default function Navbar({ title, showBack = false, showSearch = false }) 
         <button
           onClick={() => navigate(-1)}
           style={{
-            backgroundColor: 'white',
+            backgroundColor: 'rgba(255, 255, 255, 0.2)',
             border: 'none',
-            borderRadius: '50%',
-            width: '40px',
-            height: '40px',
+            borderRadius: '8px',
+            width: '36px',
+            height: '36px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             cursor: 'pointer',
             fontWeight: 'bold',
-            fontSize: '18px',
-            color: '#667eea',
+            fontSize: '16px',
+            color: 'white',
             transition: 'all 0.2s ease',
-            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
           }}
-          onMouseEnter={(e) => e.target.style.transform = 'scale(1.1)'}
-          onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+          onMouseEnter={(e) => {
+            e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
+            e.target.style.transform = 'scale(1.05)';
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
+            e.target.style.transform = 'scale(1)';
+          }}
         >
           ←
         </button>
       ) : isHome ? (
-        <h2 style={{ margin: 0, color: 'white', fontSize: '24px', fontWeight: '700' }}>
+        <h2 style={{ margin: 0, color: 'white', fontSize: '22px', fontWeight: '700' }}>
           🏪 Toko Ana
         </h2>
       ) : (
-        <div style={{ width: '40px' }} />
+        <div style={{ width: '36px' }} />
       )}
 
       {/* Judul */}
@@ -59,13 +64,12 @@ export default function Navbar({ title, showBack = false, showSearch = false }) 
         style={{
           margin: 0,
           color: 'white',
-          fontWeight: '700',
+          fontWeight: '600',
           textAlign: 'center',
           flex: 1,
           marginLeft: '16px',
           marginRight: '16px',
-          fontSize: '18px',
-          letterSpacing: '0.5px',
+          fontSize: '16px',
         }}
       >
         {title}
@@ -73,45 +77,43 @@ export default function Navbar({ title, showBack = false, showSearch = false }) 
 
       {/* Right Side Icons */}
       {isHome ? (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <div
             style={{
-              width: '40px',
-              height: '40px',
+              width: '36px',
+              height: '36px',
               borderRadius: '50%',
               backgroundColor: 'rgba(255, 255, 255, 0.2)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontSize: '20px',
+              fontSize: '18px',
               color: 'white',
-              backdropFilter: 'blur(10px)',
             }}
           >
             👤
           </div>
-          <span style={{ color: 'white', fontWeight: '500', fontSize: '14px' }}>Admin</span>
+          <span style={{ color: 'white', fontWeight: '500', fontSize: '13px' }}>Admin</span>
         </div>
       ) : showSearch ? (
         <button
           style={{
-            width: '40px',
-            height: '40px',
-            borderRadius: '50%',
+            width: '36px',
+            height: '36px',
+            borderRadius: '8px',
             backgroundColor: 'rgba(255, 255, 255, 0.2)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             cursor: 'pointer',
             border: 'none',
-            fontSize: '18px',
+            fontSize: '16px',
             color: 'white',
             transition: 'all 0.2s ease',
-            backdropFilter: 'blur(10px)',
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
-            e.currentTarget.style.transform = 'scale(1.1)';
+            e.currentTarget.style.transform = 'scale(1.05)';
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
@@ -121,7 +123,7 @@ export default function Navbar({ title, showBack = false, showSearch = false }) 
           🔍
         </button>
       ) : (
-        <div style={{ width: '40px' }} />
+        <div style={{ width: '36px' }} />
       )}
     </header>
   );

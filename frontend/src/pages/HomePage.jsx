@@ -10,56 +10,56 @@ export default function HomePage() {
       title: 'Kasir',
       icon: '💳',
       path: '/transaksi',
-      color: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-      description: 'Proses penjualan barang'
+      color: '#2563eb',
+      description: 'Proses penjualan'
     },
     {
       id: 2,
       title: 'Data Barang',
       icon: '📦',
       path: '/barang',
-      color: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-      description: 'Kelola stok barang'
+      color: '#059669',
+      description: 'Kelola stok'
     },
     {
       id: 3,
       title: 'Riwayat',
       icon: '📋',
       path: '/riwayat',
-      color: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-      description: 'Lihat riwayat transaksi'
+      color: '#d97706',
+      description: 'Transaksi'
     },
     {
       id: 4,
-      title: 'Rekap',
+      title: 'Laporan',
       icon: '📊',
       path: '/rekap',
-      color: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
-      description: 'Laporan penjualan'
+      color: '#7c3aed',
+      description: 'Analisis'
     }
   ];
 
   return (
     <>
-      <Navbar title="Dashboard Toko Ana" />
+      <Navbar title="Dashboard" />
       
-      <div style={{ padding: '40px 20px', background: '#f5f7fa', minHeight: 'calc(100vh - 70px)' }}>
+      <div style={{ padding: '40px 20px', background: '#f8fafc', minHeight: 'calc(100vh - 70px)' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-          {/* Welcome Section */}
-          <div style={{ marginBottom: '40px', textAlign: 'center' }}>
-            <h1 style={{ fontSize: '32px', color: '#1f2937', marginBottom: '10px', fontWeight: '700' }}>
-              Selamat Datang di Toko Bu Ana
+          {/* Header */}
+          <div style={{ marginBottom: '40px' }}>
+            <h1 style={{ fontSize: '32px', fontWeight: '700', color: '#1e293b', marginBottom: '8px' }}>
+              Toko Bu Ana
             </h1>
-            <p style={{ fontSize: '16px', color: '#6b7280' }}>
-              Sistem Kasir dan Manajemen Inventory Terpadu
+            <p style={{ fontSize: '16px', color: '#64748b', marginBottom: '0' }}>
+              Sistem Kasir & Manajemen Inventory
             </p>
           </div>
 
           {/* Menu Grid */}
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-            gap: '24px',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+            gap: '20px',
             marginBottom: '40px'
           }}>
             {menuItems.map((item) => (
@@ -67,54 +67,95 @@ export default function HomePage() {
                 key={item.id}
                 onClick={() => navigate(item.path)}
                 style={{
-                  background: item.color,
-                  borderRadius: '16px',
-                  padding: '32px 24px',
+                  background: 'white',
+                  border: `2px solid ${item.color}`,
+                  borderRadius: '12px',
+                  padding: '24px 20px',
                   cursor: 'pointer',
-                  color: 'white',
-                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-                  transition: 'all 0.3s ease',
-                  transform: 'translateY(0)',
-                  textDecoration: 'none',
+                  color: '#1e293b',
+                  boxShadow: '0 1px 3px rgba(0, 0, 0, 0.08)',
+                  transition: 'all 0.2s ease',
+                  textAlign: 'center',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-8px)';
-                  e.currentTarget.style.boxShadow = '0 12px 24px rgba(0, 0, 0, 0.2)';
+                  e.currentTarget.style.background = item.color;
+                  e.currentTarget.style.color = 'white';
+                  e.currentTarget.style.transform = 'translateY(-4px)';
+                  e.currentTarget.style.boxShadow = `0 8px 16px rgba(0, 0, 0, 0.12)`;
                 }}
                 onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'white';
+                  e.currentTarget.style.color = '#1e293b';
                   e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
+                  e.currentTarget.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.08)';
                 }}
               >
-                <div style={{ fontSize: '48px', marginBottom: '16px', textAlign: 'center' }}>
+                <div style={{ fontSize: '40px', marginBottom: '12px' }}>
                   {item.icon}
                 </div>
-                <h3 style={{ fontSize: '20px', fontWeight: '700', marginBottom: '8px', textAlign: 'center' }}>
+                <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '6px' }}>
                   {item.title}
                 </h3>
-                <p style={{ fontSize: '14px', opacity: '0.9', textAlign: 'center' }}>
+                <p style={{ fontSize: '13px', opacity: '0.7', margin: '0' }}>
                   {item.description}
                 </p>
               </div>
             ))}
           </div>
 
-          {/* Info Section */}
+          {/* Info Cards */}
           <div style={{
-            background: 'white',
-            borderRadius: '12px',
-            padding: '24px',
-            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)'
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+            gap: '16px',
           }}>
-            <h3 style={{ color: '#1f2937', marginBottom: '16px', fontSize: '18px', fontWeight: '600' }}>
-              📌 Panduan Penggunaan
-            </h3>
-            <ul style={{ color: '#4b5563', lineHeight: '1.8', fontSize: '14px' }}>
-              <li><strong>Kasir:</strong> Gunakan untuk mencatat penjualan dan mencetak nota</li>
-              <li><strong>Data Barang:</strong> Tambah, edit, atau hapus data produk yang dijual</li>
-              <li><strong>Riwayat:</strong> Lihat semua transaksi yang telah dilakukan</li>
-              <li><strong>Rekap:</strong> Analisis penjualan dan laporan keuangan harian/bulanan</li>
-            </ul>
+            <div style={{
+              background: 'white',
+              padding: '20px',
+              borderRadius: '12px',
+              border: '1px solid #e2e8f0',
+              boxShadow: '0 1px 3px rgba(0, 0, 0, 0.08)'
+            }}>
+              <div style={{ fontSize: '24px', marginBottom: '8px' }}>📌</div>
+              <h4 style={{ fontSize: '14px', fontWeight: '600', marginBottom: '4px', color: '#1e293b' }}>
+                Mulai Cepat
+              </h4>
+              <p style={{ fontSize: '13px', color: '#64748b', margin: '0' }}>
+                Klik menu untuk memulai
+              </p>
+            </div>
+
+            <div style={{
+              background: 'white',
+              padding: '20px',
+              borderRadius: '12px',
+              border: '1px solid #e2e8f0',
+              boxShadow: '0 1px 3px rgba(0, 0, 0, 0.08)'
+            }}>
+              <div style={{ fontSize: '24px', marginBottom: '8px' }}>💾</div>
+              <h4 style={{ fontSize: '14px', fontWeight: '600', marginBottom: '4px', color: '#1e293b' }}>
+                Data Aman
+              </h4>
+              <p style={{ fontSize: '13px', color: '#64748b', margin: '0' }}>
+                Tersimpan di MongoDB
+              </p>
+            </div>
+
+            <div style={{
+              background: 'white',
+              padding: '20px',
+              borderRadius: '12px',
+              border: '1px solid #e2e8f0',
+              boxShadow: '0 1px 3px rgba(0, 0, 0, 0.08)'
+            }}>
+              <div style={{ fontSize: '24px', marginBottom: '8px' }}>⚡</div>
+              <h4 style={{ fontSize: '14px', fontWeight: '600', marginBottom: '4px', color: '#1e293b' }}>
+                Cepat & Responsif
+              </h4>
+              <p style={{ fontSize: '13px', color: '#64748b', margin: '0' }}>
+                Teknologi modern
+              </p>
+            </div>
           </div>
         </div>
       </div>
