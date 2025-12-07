@@ -34,6 +34,7 @@ const errorHandler = require("./middleware/errorHandler");
 app.use(errorHandler);
 
 // JALANKAN SERVER (cukup sekali)
-app.listen(process.env.PORT || 5000, () => {
+app.listen(process.env.PORT || 5000, '0.0.0.0', () => {
   console.log("Server berjalan di port", process.env.PORT || 5000);
+  console.log("API ready at http://localhost:5000/api");
 });

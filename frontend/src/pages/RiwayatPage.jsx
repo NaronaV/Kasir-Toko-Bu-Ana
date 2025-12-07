@@ -1,6 +1,7 @@
 // src/pages/RiwayatPage.jsx
 import { useState, useEffect } from "react";
 import api from "../services/api";
+import Navbar from "../components/Navbar";
 
 export default function RiwayatPage() {
   const [riwayat, setRiwayat] = useState([]);
@@ -24,119 +25,96 @@ export default function RiwayatPage() {
       });
   }, []);
 
-  if (loading) {
-    return (
-      <div style={{ padding: "20px" }}>
-        <p>Loading riwayat transaksi...</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div style={{ padding: "20px", color: "red" }}>
-        <p>⚠️ {error}</p>
-      </div>
-    );
-  }
-
   return (
-    <div style={{ fontFamily: 'Arial, sans-serif', maxWidth: '1000px', margin: '0 auto' }}>
-      {/* Header Biru */}
-      <header style={{
-        backgroundColor: '#6c9ed7',
-        padding: '12px 20px',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        borderRadius: '8px 8px 0 0'
-      }}>
-        <button
-          onClick={() => window.history.back()}
-          style={{
-            backgroundColor: 'white',
-            border: 'none',
-            borderRadius: '50%',
-            width: '30px',
-            height: '30px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer'
-          }}
-        >
-          ←
-        </button>
-
-        <h2 style={{ margin: 0, color: 'white', textAlign: 'center', flex: 1 }}>RIWAYAT PENJUALAN</h2>
-
-        <div style={{
-          width: '30px',
-          height: '30px',
-          borderRadius: '50%',
-          backgroundColor: 'white',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontSize: '16px',
-          cursor: 'pointer'
-        }}>
-          🔍
-        </div>
-      </header>
-
-      {/* Tabel Riwayat */}
-      <div style={{
-        padding: '20px',
-        backgroundColor: 'white',
-        borderRadius: '0 0 8px 8px',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-        overflowY: 'auto',
-        maxHeight: 'calc(100vh - 120px)'
-      }}>
-        {riwayat.length === 0 ? (
-          <p>Tidak ada transaksi.</p>
-        ) : (
-          <table style={{
-            width: '100%',
-            borderCollapse: 'collapse',
-            fontSize: '14px',
-            border: '1px solid #ddd'
+    <>
+      <Navbar title="Riwayat Penjualan" showBack showSearch />
+      
+      <div style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto', background: '#f8fafc', minHeight: 'calc(100vh - 70px)' }}>
+        {loading ? (
+          <div style={{
+            background: 'white',
+            padding: '40px',
+            borderRadius: '12px',
+            textAlign: 'center',
+            color: '#64748b',
+            border: '1px solid #e2e8f0'
           }}>
+            <p>⏳ Memuat riwayat transaksi...</p>
+          </div>
+        ) : error ? (
+          <div className="error-message">{error}</div>
+        ) : riwayat.length === 0 ? (
+          <div style={{
+            background: 'white',
+            padding: '40px',
+            borderRadius: '12px',
+            textAlign: 'center',
+            color: '#64748b',
+            border: '1px solid #e2e8f0'
+          }}>
+            <div style={{ fontSize: '32px', marginBottom: '8px' }}>📋</div>
+            <p>Belum ada transaksi. Mulai dengan menu Kasir untuk buat transaksi baru.</p>
+          </div>
+        ) : (
+          <table>
             <thead>
-              <tr style={{ backgroundColor: '#6c9ed7', color: 'white' }}>
-                <th style={headerStyle}>No</th>
-                <th style={headerStyle}>Tanggal</th>
-                <th style={headerStyle}>Pembeli</th>
-                <th style={headerStyle}>Nama Barang</th>
-                <th style={headerStyle}>Item</th>
-                <th style={headerStyle}>Total</th>
+              <tr>
+                <th>No</th>
+                <th>Tanggal</th>
+                <th>Barang</th>
+                <th>Jumlah</th>
+                <th>Total</th>
+                <th>Aksi</th>
               </tr>
             </thead>
             <tbody>
               {riwayat.map((transaksi, index) => (
-                <tr key={transaksi._id || index} style={{ borderBottom: '1px solid #eee' }}>
-                  <td style={cellStyle}>{index + 1}</td>
-                  <td style={cellStyle}>
+                <tr key={transaksi._id || index}>
+                  <td style={{ fontWeight: '600', color: '#2563eb' }}>{index + 1}</td>
+                  <td>
                     {new Date(transaksi.tanggal).toLocaleString("id-ID")}
                   </td>
-                  <td style={cellStyle}>-</td> {/* Jika tidak ada nama pembeli */}
-                  <td style={cellStyle}>
+                  <td>
                     {transaksi.items?.map((item, idx) => (
-                      <div key={idx}>
-                        {item.nama || "Barang"}<br />
+                      <div key={idx} style={{ fontSize: '13px', marginBottom: '2px' }}>
+                        {item.barang?.nama || "Barang"}
                       </div>
                     ))}
                   </td>
-                  <td style={cellStyle}>
+                  <td>
                     {transaksi.items?.map((item, idx) => (
-                      <div key={idx}>
-                        {item.jumlah}<br />
+                      <div key={idx} style={{ fontSize: '13px', marginBottom: '2px' }}>
+                        {item.qty}x
                       </div>
                     ))}
                   </td>
-                  <td style={cellStyle}>
-                    Rp {transaksi.total?.toLocaleString() || 0}
+                  <td style={{ fontWeight: '600', color: '#059669' }}>
+                    Rp {transaksi.total?.toLocaleString('id-ID') || 0}
+                  </td>
+                  <td>
+                    <button
+                      onClick={() => window.open(`/cetak-nota/${transaksi._id}`, '_blank')}
+                      style={{
+                        background: '#2563eb',
+                        color: 'white',
+                        border: 'none',
+                        padding: '6px 12px',
+                        borderRadius: '6px',
+                        fontSize: '12px',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.target.style.background = '#1e40af';
+                        e.target.style.transform = 'scale(1.05)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.target.style.background = '#2563eb';
+                        e.target.style.transform = 'scale(1)';
+                      }}
+                    >
+                      🖨️ Cetak
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -144,20 +122,6 @@ export default function RiwayatPage() {
           </table>
         )}
       </div>
-    </div>
+    </>
   );
 }
-
-// Styling reusable
-const headerStyle = {
-  padding: '10px',
-  textAlign: 'left',
-  fontWeight: 'bold',
-};
-
-const cellStyle = {
-  padding: '10px',
-  textAlign: 'left',
-  verticalAlign: 'top',
-  backgroundColor: '#f5f5f5',
-};
