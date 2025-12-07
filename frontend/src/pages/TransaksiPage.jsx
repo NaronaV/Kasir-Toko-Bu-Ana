@@ -128,34 +128,169 @@ export default function TransaksiPage() {
     }
   };
 
-  // Cetak nota (simulasi)
+  // Cetak nota
   const printNota = () => {
+    const tanggal = new Date();
+    const options = { 
+      weekday: 'long', 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    };
+    const tanggalFormat = tanggal.toLocaleDateString('id-ID', options);
+    const notaID = `NOTA-${Date.now()}`;
+
+    const notaHTML = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Nota - ${notaID}</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Courier New', monospace;
+      width: 80mm;
+      margin: 0 auto;
+      padding: 10px;
+      font-size: 12px;
+    }
+    .header {
+      text-align: center;
+      border-bottom: 2px dashed #000;
+      padding-bottom: 10px;
+      margin-bottom: 10px;
+    }
+    .header h1 { font-size: 18px; margin-bottom: 5px; font-weight: bold; }
+    .header p { font-size: 11px; margin: 2px 0; }
+    .info { margin-bottom: 10px; font-size: 11px; }
+    .items {
+      border-bottom: 2px dashed #000;
+      padding-bottom: 10px;
+      margin-bottom: 10px;
+    }
+    .item { margin-bottom: 8px; }
+    .item-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 2px;
+      font-weight: bold;
+    }
+    .item-detail {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      padding-left: 10px;
+    }
+    .total {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 2px solid #000;
+    }
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    .payment-info {
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid #000;
+      font-size: 11px;
+    }
+    .payment-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 3px;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 15px;
+      padding-top: 10px;
+      border-top: 2px dashed #000;
+      font-size: 11px;
+    }
+    .print-btn {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      padding: 10px 20px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: Arial, sans-serif;
+      z-index: 1000;
+    }
+    .print-btn:hover { background: #45a049; }
+    @media print {
+      body { width: 100%; }
+      .no-print { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <button class="print-btn no-print" onclick="window.print()">🖨️ Cetak Nota</button>
+  
+  <div class="header">
+    <h1>TOKO BU ANA</h1>
+    <p>Desa Rejosari, Dukuh Kepangen</p>
+    <p>RT 5 RW 1, Jalan Bareng Colo</p>
+  </div>
+  
+  <div class="info">
+    <div>No. Nota: <strong>${notaID}</strong></div>
+    <div>Tanggal: ${tanggalFormat}</div>
+  </div>
+  
+  <div class="items">
+    ${keranjang.map(item => `
+      <div class="item">
+        <div class="item-row">
+          <span>${item.nama}</span>
+        </div>
+        <div class="item-detail">
+          <span>${item.jumlah} x Rp ${item.hargaSatuan.toLocaleString('id-ID')}</span>
+          <span>Rp ${item.total.toLocaleString('id-ID')}</span>
+        </div>
+      </div>
+    `).join('')}
+  </div>
+  
+  <div class="total">
+    <div class="total-row">
+      <span>TOTAL:</span>
+      <span>Rp ${total.toLocaleString('id-ID')}</span>
+    </div>
+    <div class="payment-info">
+      <div class="payment-row">
+        <span>Pembayaran:</span>
+        <span>Rp ${parseFloat(bayar).toLocaleString('id-ID')}</span>
+      </div>
+      <div class="payment-row">
+        <span>Kembalian:</span>
+        <span>Rp ${kembalian.toLocaleString('id-ID')}</span>
+      </div>
+    </div>
+  </div>
+  
+  <div class="footer">
+    <p>Terima kasih atas kunjungan Anda!</p>
+    <p>Barang yang sudah dibeli tidak dapat dikembalikan</p>
+    <p>═══════════════════════════</p>
+  </div>
+</body>
+</html>
+    `;
+
     const printWindow = window.open("", "_blank");
-    printWindow.document.write(`
-      <html>
-        <head><title>Nota - Toko Ana</title></head>
-        <body style="font-family: monospace; padding: 20px;">
-          <div style="text-align: center; margin-bottom: 20px;">
-            <h2>NOTA PENJUALAN</h2>
-            <p>Toko Ana</p>
-            <p>${new Date().toLocaleString()}</p>
-          </div>
-          <hr>
-          ${keranjang
-            .map(
-              (item) =>
-                `<p>${item.nama} x${item.jumlah} @ Rp${item.hargaSatuan.toLocaleString()} = Rp${item.total.toLocaleString()}</p>`
-            )
-            .join("")}
-          <hr>
-          <p style="font-weight: bold;">Total: Rp${total.toLocaleString()}</p>
-          <p>Bayar: Rp${parseFloat(bayar).toLocaleString()}</p>
-          <p>Kembalian: Rp${kembalian.toLocaleString()}</p>
-          <hr>
-          <p>Terima kasih telah berbelanja!</p>
-        </body>
-      </html>
-    `);
+    printWindow.document.write(notaHTML);
     printWindow.document.close();
     printWindow.print();
   };
@@ -285,7 +420,6 @@ export default function TransaksiPage() {
             >
               <option value="cash">Cash</option>
               <option value="transfer">Transfer</option>
-              <option value="qr">QRIS</option>
             </select>
           </div>
 

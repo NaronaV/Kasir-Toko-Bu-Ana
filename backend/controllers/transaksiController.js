@@ -186,8 +186,7 @@ exports.cetakNota = async (req, res) => {
   
   <div class="header">
     <h1>TOKO BU ANA</h1>
-    <p>Jl. Contoh No. 123, Kudus</p>
-    <p>Telp: 0812-3456-7890</p>
+    <p>Desa Rejosari, Dukuh Kepangen, RT 5 RW 1, Jalan Bareng Colo</p>
   </div>
   
   <div class="info">

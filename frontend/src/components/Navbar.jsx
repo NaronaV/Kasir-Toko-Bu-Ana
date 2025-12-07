@@ -77,24 +77,7 @@ export default function Navbar({ title, showBack = false, showSearch = false }) 
 
       {/* Right Side Icons */}
       {isHome ? (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <div
-            style={{
-              width: '36px',
-              height: '36px',
-              borderRadius: '50%',
-              backgroundColor: 'rgba(255, 255, 255, 0.2)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '18px',
-              color: 'white',
-            }}
-          >
-            👤
-          </div>
-          <span style={{ color: 'white', fontWeight: '500', fontSize: '13px' }}>Admin</span>
-        </div>
+        <div style={{ width: '36px' }} />
       ) : showSearch ? (
         <button
           style={{

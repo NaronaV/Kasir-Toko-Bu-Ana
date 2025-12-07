@@ -27,11 +27,11 @@ export default function RiwayatPage() {
 
   return (
     <>
-      {/* Header biru pastel dengan ikon nota */}
+      {/* Header biru gelap dengan ikon nota (judul putih) */}
       <div style={{
-        background: 'linear-gradient(90deg, #e0e7ff 0%, #bae6fd 100%)',
+        background: 'linear-gradient(90deg, #2563eb 0%, #1e40af 100%)',
         padding: '0',
-        borderBottom: '2px solid #2563eb',
+        borderBottom: '2px solid #1e40af',
         position: 'sticky',
         top: 0,
         zIndex: 10
@@ -44,25 +44,42 @@ export default function RiwayatPage() {
           maxWidth: '1200px',
           margin: '0 auto'
         }}>
-          <button onClick={() => window.history.back()} style={{
-            background: '#2563eb',
-            color: 'white',
-            border: 'none',
-            borderRadius: '8px',
-            padding: '8px 16px',
-            fontWeight: '600',
-            fontSize: '16px',
-            cursor: 'pointer',
-            boxShadow: '0 2px 8px rgba(37,99,235,0.08)'
-          }}>← Kembali</button>
+          <button
+            onClick={() => window.history.back()}
+            style={{
+              backgroundColor: 'rgba(255, 255, 255, 0.2)',
+              border: 'none',
+              borderRadius: '8px',
+              width: '36px',
+              height: '36px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              fontWeight: 'bold',
+              fontSize: '16px',
+              color: 'white',
+              transition: 'all 0.2s ease'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
+              e.currentTarget.style.transform = 'scale(1.05)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
+              e.currentTarget.style.transform = 'scale(1)';
+            }}
+          >
+            ←
+          </button>
           <h1 style={{
-            color: '#2563eb',
+            color: '#ffffff',
             fontWeight: '800',
             fontSize: '24px',
             letterSpacing: '-0.5px',
             margin: 0
           }}>RIWAYAT PENJUALAN</h1>
-          <span style={{ fontSize: '28px', color: '#2563eb', background: '#e0e7ff', borderRadius: '50%', padding: '8px' }}>🧾</span>
+          <span style={{ fontSize: '28px', color: '#ffffff', background: 'transparent', borderRadius: '50%', padding: '8px' }}>🧾</span>
         </div>
       </div>
 
@@ -123,17 +140,17 @@ export default function RiwayatPage() {
             <table style={{
               width: '100%',
               borderCollapse: 'collapse',
-              fontSize: '14px'
+              fontSize: '14px',
+              color: '#ffffff'
             }}>
               <thead>
-                <tr style={{ background: '#e0e7ff', borderBottom: '2px solid #2563eb' }}>
-                  <th style={{ padding: '14px 18px', textAlign: 'center', color: '#2563eb', fontWeight: '700' }}>No</th>
-                  <th style={{ padding: '14px 18px', textAlign: 'center', color: '#2563eb', fontWeight: '700' }}>Tanggal</th>
-                  <th style={{ padding: '14px 18px', textAlign: 'center', color: '#2563eb', fontWeight: '700' }}>Alamat</th>
-                  <th style={{ padding: '14px 18px', textAlign: 'center', color: '#2563eb', fontWeight: '700' }}>Nama Barang</th>
-                  <th style={{ padding: '14px 18px', textAlign: 'center', color: '#2563eb', fontWeight: '700' }}>Item</th>
-                  <th style={{ padding: '14px 18px', textAlign: 'center', color: '#2563eb', fontWeight: '700' }}>Total</th>
-                  <th style={{ padding: '14px 18px', textAlign: 'center', color: '#2563eb', fontWeight: '700' }}>Aksi</th>
+                <tr style={{ background: '#1e40af', borderBottom: '2px solid #1e3a8a' }}>
+                  <th style={{ padding: '14px 18px', textAlign: 'center', color: '#ffffff', fontWeight: '700' }}>No</th>
+                  <th style={{ padding: '14px 18px', textAlign: 'center', color: '#ffffff', fontWeight: '700' }}>Tanggal</th>
+                  <th style={{ padding: '14px 18px', textAlign: 'center', color: '#ffffff', fontWeight: '700' }}>Nama Barang</th>
+                  <th style={{ padding: '14px 18px', textAlign: 'center', color: '#ffffff', fontWeight: '700' }}>Item</th>
+                  <th style={{ padding: '14px 18px', textAlign: 'center', color: '#ffffff', fontWeight: '700' }}>Total</th>
+                  <th style={{ padding: '14px 18px', textAlign: 'center', color: '#ffffff', fontWeight: '700' }}>Aksi</th>
                 </tr>
               </thead>
               <tbody>
@@ -147,24 +164,23 @@ export default function RiwayatPage() {
                     onMouseEnter={e => e.currentTarget.style.background = '#bae6fd'}
                     onMouseLeave={e => e.currentTarget.style.background = index % 2 === 0 ? '#f3f4f6' : 'white'}
                   >
-                    <td style={{ textAlign: 'center', fontWeight: '700', color: '#2563eb' }}>{index + 1}</td>
-                    <td style={{ textAlign: 'center' }}>{new Date(transaksi.tanggal).toLocaleString('id-ID')}</td>
-                    <td style={{ textAlign: 'center', color: '#64748b', fontWeight: '500' }}>{transaksi.alamat || '-'}</td>
+                    <td style={{ textAlign: 'center', fontWeight: '700', color: '#4b0082' }}>{index + 1}</td>
+                    <td style={{ textAlign: 'center', color: '#4b0082' }}>{new Date(transaksi.tanggal).toLocaleString('id-ID')}</td>
                     <td style={{ textAlign: 'center' }}>
                       {transaksi.items?.map((item, idx) => (
-                        <div key={idx} style={{ fontSize: '13px', marginBottom: '2px', color: '#2563eb', fontWeight: '600' }}>
+                        <div key={idx} style={{ fontSize: '13px', marginBottom: '2px', color: '#4b0082', fontWeight: '600' }}>
                           {item.barang?.nama || 'Barang'}
                         </div>
                       ))}
                     </td>
                     <td style={{ textAlign: 'center' }}>
                       {transaksi.items?.map((item, idx) => (
-                        <div key={idx} style={{ fontSize: '13px', marginBottom: '2px', color: '#64748b', fontWeight: '500' }}>
+                        <div key={idx} style={{ fontSize: '13px', marginBottom: '2px', color: '#6b21a8', fontWeight: '500' }}>
                           {item.qty}x
                         </div>
                       ))}
                     </td>
-                    <td style={{ textAlign: 'center', fontWeight: '700', color: '#059669' }}>
+                    <td style={{ textAlign: 'center', fontWeight: '700', color: '#4b0082' }}>
                       Rp {transaksi.total?.toLocaleString('id-ID') || 0}
                     </td>
                     <td style={{ textAlign: 'center' }}>

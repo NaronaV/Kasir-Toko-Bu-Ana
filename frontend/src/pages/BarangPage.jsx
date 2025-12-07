@@ -9,6 +9,8 @@ export default function BarangPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [sortBy, setSortBy] = useState('nama'); // 'nama', 'harga'
+  const [sortDirection, setSortDirection] = useState('asc');
 
   // Form state
   const [form, setForm] = useState({
@@ -42,9 +44,30 @@ export default function BarangPage() {
   };
 
   // Filter barang berdasarkan search term
-  const filteredBarang = barang.filter(item =>
+  let filteredBarang = barang.filter(item =>
     item.nama.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  // Sort barang
+  filteredBarang = [...filteredBarang].sort((a, b) => {
+    if (sortBy === 'nama') {
+      return a.nama.localeCompare(b.nama);
+    } else if (sortBy === 'harga') {
+      const hargaA = a.typeHarga === 'fixed' ? a.harga : (a.hargaMin + a.hargaMax) / 2;
+      const hargaB = b.typeHarga === 'fixed' ? b.harga : (b.hargaMin + b.hargaMax) / 2;
+      return sortDirection === 'asc' ? hargaA - hargaB : hargaB - hargaA;
+    }
+    return 0;
+  });
+
+  const handleSort = (type) => {
+    if (sortBy === type) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortBy(type);
+      setSortDirection('asc');
+    }
+  };
 
   // Handle input form
   const handleChange = (e) => {
@@ -502,6 +525,9 @@ export default function BarangPage() {
               barang={filteredBarang}
               onEdit={handleEdit}
               onDelete={handleDelete}
+              sortBy={sortBy}
+              sortDirection={sortDirection}
+              onSort={handleSort}
             />
           )}
         </div>

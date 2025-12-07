@@ -1,4 +1,4 @@
-export default function TabelBarang({ barang, onEdit, onDelete }) {
+export default function TabelBarang({ barang, onEdit, onDelete, sortBy, sortDirection, onSort }) {
   return (
     <div style={{
       background: 'white',
@@ -11,7 +11,10 @@ export default function TabelBarang({ barang, onEdit, onDelete }) {
       <div style={{
         background: '#e9d5ff',
         padding: '16px 24px',
-        borderBottom: '2px solid #d8b4fe'
+        borderBottom: '2px solid #d8b4fe',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center'
       }}>
         <h3 style={{
           fontSize: '16px',
@@ -24,6 +27,58 @@ export default function TabelBarang({ barang, onEdit, onDelete }) {
         }}>
           📋 Daftar Barang ({barang.length})
         </h3>
+        {onSort && (
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <button
+              onClick={() => onSort('nama')}
+              style={{
+                padding: '6px 12px',
+                background: sortBy === 'nama' ? '#c084fc' : '#e9d5ff',
+                color: sortBy === 'nama' ? 'white' : '#5b21b6',
+                border: 'none',
+                borderRadius: '6px',
+                cursor: 'pointer',
+                fontSize: '12px',
+                fontWeight: '600',
+                transition: 'all 0.2s'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = '#a855f7';
+                e.currentTarget.style.color = 'white';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = sortBy === 'nama' ? '#c084fc' : '#e9d5ff';
+                e.currentTarget.style.color = sortBy === 'nama' ? 'white' : '#5b21b6';
+              }}
+            >
+              📝 Abjad
+            </button>
+            <button
+              onClick={() => onSort('harga')}
+              style={{
+                padding: '6px 12px',
+                background: sortBy === 'harga' ? '#c084fc' : '#e9d5ff',
+                color: sortBy === 'harga' ? 'white' : '#5b21b6',
+                border: 'none',
+                borderRadius: '6px',
+                cursor: 'pointer',
+                fontSize: '12px',
+                fontWeight: '600',
+                transition: 'all 0.2s'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = '#a855f7';
+                e.currentTarget.style.color = 'white';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = sortBy === 'harga' ? '#c084fc' : '#e9d5ff';
+                e.currentTarget.style.color = sortBy === 'harga' ? 'white' : '#5b21b6';
+              }}
+            >
+              💰 Harga {sortBy === 'harga' ? (sortDirection === 'asc' ? '↑' : '↓') : ''}
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Scrollable Table */}
