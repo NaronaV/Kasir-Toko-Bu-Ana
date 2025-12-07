@@ -104,9 +104,9 @@ export default function TransaksiPage() {
     setSubmitting(true);
     const payload = {
       items: keranjang.map((item) => ({
-        barangId: item._id,
-        jumlah: item.jumlah,
-        hargaSatuan: item.hargaSatuan,
+        barang: item._id,
+        qty: item.jumlah,
+        harga: item.hargaSatuan,
       })),
       total,
       metodePembayaran,
