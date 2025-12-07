@@ -8,6 +8,7 @@ export default function BarangPage() {
   const [barang, setBarang] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
 
   // Form state
   const [form, setForm] = useState({
@@ -39,6 +40,11 @@ export default function BarangPage() {
       })
       .finally(() => setLoading(false));
   };
+
+  // Filter barang berdasarkan search term
+  const filteredBarang = barang.filter(item =>
+    item.nama.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   // Handle input form
   const handleChange = (e) => {
@@ -112,182 +118,393 @@ export default function BarangPage() {
     }
   };
 
+
   if (loading) {
     return (
       <>
-        <Navbar title="STOK BARANG" showBack />
-        <div style={{ padding: "20px" }}>Loading data stok...</div>
+        <Navbar title="Stok Barang" showBack />
+        <div style={{
+          padding: '40px 20px',
+          textAlign: 'center',
+          color: '#6b21a8',
+          fontSize: '16px'
+        }}>
+          ⏳ Memuat data stok...
+        </div>
       </>
     );
   }
 
   return (
     <>
-      <Navbar title="Data Barang" showBack />
+      <Navbar title="Stok Barang" showBack />
 
-      <div style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto', background: '#f8fafc', minHeight: 'calc(100vh - 70px)' }}>
-        {/* Form Tambah/Edit */}
-        <div style={{
-          background: 'white',
-          padding: '24px',
-          borderRadius: '12px',
-          marginBottom: '24px',
-          border: '1px solid #e2e8f0',
-          boxShadow: '0 1px 3px rgba(0, 0, 0, 0.08)'
-        }}>
-          <h3 style={{ marginBottom: '20px', color: '#1e293b', fontSize: '18px', fontWeight: '600' }}>
-            {isEditing ? '✏️ Edit Barang' : '➕ Tambah Barang'}
-          </h3>
+      <div style={{
+        minHeight: 'calc(100vh - 70px)',
+        background: 'linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%)',
+        padding: '40px 20px'
+      }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          {/* Search Bar */}
+          <div style={{
+            background: 'white',
+            padding: '20px',
+            borderRadius: '16px',
+            marginBottom: '30px',
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
+            border: '1px solid #e9d5ff',
+            display: 'flex',
+            gap: '12px',
+            alignItems: 'center'
+          }}>
+            <span style={{ fontSize: '20px' }}>🔍</span>
+            <input
+              type="text"
+              placeholder="Cari Barang..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              style={{
+                flex: 1,
+                border: 'none',
+                outline: 'none',
+                fontSize: '15px',
+                color: '#4b0082',
+                fontWeight: '500'
+              }}
+            />
+          </div>
 
-          <form onSubmit={handleSubmit}>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
-              {/* Nama Barang */}
-              <div>
-                <label style={{ display: 'block', marginBottom: '6px', fontWeight: '500', fontSize: '14px', color: '#1e293b' }}>
-                  Nama Barang
-                </label>
-                <input
-                  type="text"
-                  name="nama"
-                  placeholder="Contoh: Bumbu Rampe"
-                  value={form.nama}
-                  onChange={handleChange}
-                  required
-                  style={{ width: '100%' }}
-                />
-              </div>
+          {/* Form Tambah/Edit */}
+          <div style={{
+            background: 'white',
+            padding: '28px',
+            borderRadius: '16px',
+            marginBottom: '30px',
+            border: '2px solid #e9d5ff',
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)'
+          }}>
+            <h3 style={{
+              marginBottom: '20px',
+              color: '#4b0082',
+              fontSize: '18px',
+              fontWeight: '700',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px'
+            }}>
+              {isEditing ? '✏️ Edit Barang' : '➕ Tambah Barang'}
+            </h3>
 
-              {/* Stok */}
-              <div>
-                <label style={{ display: 'block', marginBottom: '6px', fontWeight: '500', fontSize: '14px', color: '#1e293b' }}>
-                  Stok
-                </label>
-                <input
-                  type="number"
-                  name="stok"
-                  placeholder="0"
-                  value={form.stok}
-                  onChange={handleChange}
-                  required
-                  min="0"
-                />
-              </div>
-
-              {/* Tipe Harga */}
-              <div>
-                <label style={{ display: 'block', marginBottom: '6px', fontWeight: '500', fontSize: '14px', color: '#1e293b' }}>
-                  Tipe Harga
-                </label>
-                <select
-                  name="typeHarga"
-                  value={form.typeHarga}
-                  onChange={handleChange}
-                  style={{ width: '100%' }}
-                >
-                  <option value="fixed">Harga Tetap</option>
-                  <option value="range">Rentang Harga</option>
-                </select>
-              </div>
-
-              {/* Input Harga */}
-              {form.typeHarga === 'fixed' ? (
+            <form onSubmit={handleSubmit}>
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+                gap: '16px',
+                marginBottom: '20px'
+              }}>
+                {/* Nama Barang */}
                 <div>
-                  <label style={{ display: 'block', marginBottom: '6px', fontWeight: '500', fontSize: '14px', color: '#1e293b' }}>
-                    Harga (Rp)
+                  <label style={{
+                    display: 'block',
+                    marginBottom: '8px',
+                    fontWeight: '600',
+                    fontSize: '14px',
+                    color: '#5b21b6'
+                  }}>
+                    Nama Barang
+                  </label>
+                  <input
+                    type="text"
+                    name="nama"
+                    placeholder="Contoh: Bumbu Rampe"
+                    value={form.nama}
+                    onChange={handleChange}
+                    required
+                    style={{
+                      width: '100%',
+                      padding: '10px 12px',
+                      borderRadius: '8px',
+                      border: '2px solid #e9d5ff',
+                      fontSize: '14px',
+                      color: '#4b0082',
+                      boxSizing: 'border-box',
+                      transition: 'border-color 0.2s'
+                    }}
+                    onFocus={(e) => e.target.style.borderColor = '#c084fc'}
+                    onBlur={(e) => e.target.style.borderColor = '#e9d5ff'}
+                  />
+                </div>
+
+                {/* Stok */}
+                <div>
+                  <label style={{
+                    display: 'block',
+                    marginBottom: '8px',
+                    fontWeight: '600',
+                    fontSize: '14px',
+                    color: '#5b21b6'
+                  }}>
+                    Stok
                   </label>
                   <input
                     type="number"
-                    name="harga"
-                    placeholder="100000"
-                    value={form.harga}
+                    name="stok"
+                    placeholder="0"
+                    value={form.stok}
                     onChange={handleChange}
                     required
                     min="0"
+                    style={{
+                      width: '100%',
+                      padding: '10px 12px',
+                      borderRadius: '8px',
+                      border: '2px solid #e9d5ff',
+                      fontSize: '14px',
+                      color: '#4b0082',
+                      boxSizing: 'border-box',
+                      transition: 'border-color 0.2s'
+                    }}
+                    onFocus={(e) => e.target.style.borderColor = '#c084fc'}
+                    onBlur={(e) => e.target.style.borderColor = '#e9d5ff'}
                   />
                 </div>
-              ) : (
-                <>
-                  <div>
-                    <label style={{ display: 'block', marginBottom: '6px', fontWeight: '500', fontSize: '14px', color: '#1e293b' }}>
-                      Harga Min (Rp)
-                    </label>
-                    <input
-                      type="number"
-                      name="hargaMin"
-                      placeholder="Minimum"
-                      value={form.hargaMin}
-                      onChange={handleChange}
-                      required
-                      min="0"
-                    />
-                  </div>
-                  <div>
-                    <label style={{ display: 'block', marginBottom: '6px', fontWeight: '500', fontSize: '14px', color: '#1e293b' }}>
-                      Harga Max (Rp)
-                    </label>
-                    <input
-                      type="number"
-                      name="hargaMax"
-                      placeholder="Maximum"
-                      value={form.hargaMax}
-                      onChange={handleChange}
-                      required
-                      min="0"
-                    />
-                  </div>
-                </>
-              )}
-            </div>
 
-            {/* Tombol */}
-            <div style={{ display: 'flex', gap: '12px', marginTop: '20px' }}>
-              <button
-                type="submit"
-                className="btn-success"
-                style={{ padding: '10px 20px' }}
-              >
-                {isEditing ? '✓ Simpan' : '+ Tambah'}
-              </button>
-              {isEditing && (
+                {/* Tipe Harga */}
+                <div>
+                  <label style={{
+                    display: 'block',
+                    marginBottom: '8px',
+                    fontWeight: '600',
+                    fontSize: '14px',
+                    color: '#5b21b6'
+                  }}>
+                    Tipe Harga
+                  </label>
+                  <select
+                    name="typeHarga"
+                    value={form.typeHarga}
+                    onChange={handleChange}
+                    style={{
+                      width: '100%',
+                      padding: '10px 12px',
+                      borderRadius: '8px',
+                      border: '2px solid #e9d5ff',
+                      fontSize: '14px',
+                      color: '#4b0082',
+                      fontWeight: '500',
+                      background: 'white',
+                      cursor: 'pointer',
+                      boxSizing: 'border-box',
+                      transition: 'border-color 0.2s'
+                    }}
+                    onFocus={(e) => e.target.style.borderColor = '#c084fc'}
+                    onBlur={(e) => e.target.style.borderColor = '#e9d5ff'}
+                  >
+                    <option value="fixed">Harga Tetap</option>
+                    <option value="range">Rentang Harga</option>
+                  </select>
+                </div>
+
+                {/* Input Harga */}
+                {form.typeHarga === 'fixed' ? (
+                  <div>
+                    <label style={{
+                      display: 'block',
+                      marginBottom: '8px',
+                      fontWeight: '600',
+                      fontSize: '14px',
+                      color: '#5b21b6'
+                    }}>
+                      Harga (Rp)
+                    </label>
+                    <input
+                      type="number"
+                      name="harga"
+                      placeholder="100000"
+                      value={form.harga}
+                      onChange={handleChange}
+                      required
+                      min="0"
+                      style={{
+                        width: '100%',
+                        padding: '10px 12px',
+                        borderRadius: '8px',
+                        border: '2px solid #e9d5ff',
+                        fontSize: '14px',
+                        color: '#4b0082',
+                        boxSizing: 'border-box',
+                        transition: 'border-color 0.2s'
+                      }}
+                      onFocus={(e) => e.target.style.borderColor = '#c084fc'}
+                      onBlur={(e) => e.target.style.borderColor = '#e9d5ff'}
+                    />
+                  </div>
+                ) : (
+                  <>
+                    <div>
+                      <label style={{
+                        display: 'block',
+                        marginBottom: '8px',
+                        fontWeight: '600',
+                        fontSize: '14px',
+                        color: '#5b21b6'
+                      }}>
+                        Harga Min (Rp)
+                      </label>
+                      <input
+                        type="number"
+                        name="hargaMin"
+                        placeholder="Minimum"
+                        value={form.hargaMin}
+                        onChange={handleChange}
+                        required
+                        min="0"
+                        style={{
+                          width: '100%',
+                          padding: '10px 12px',
+                          borderRadius: '8px',
+                          border: '2px solid #e9d5ff',
+                          fontSize: '14px',
+                          color: '#4b0082',
+                          boxSizing: 'border-box',
+                          transition: 'border-color 0.2s'
+                        }}
+                        onFocus={(e) => e.target.style.borderColor = '#c084fc'}
+                        onBlur={(e) => e.target.style.borderColor = '#e9d5ff'}
+                      />
+                    </div>
+                    <div>
+                      <label style={{
+                        display: 'block',
+                        marginBottom: '8px',
+                        fontWeight: '600',
+                        fontSize: '14px',
+                        color: '#5b21b6'
+                      }}>
+                        Harga Max (Rp)
+                      </label>
+                      <input
+                        type="number"
+                        name="hargaMax"
+                        placeholder="Maximum"
+                        value={form.hargaMax}
+                        onChange={handleChange}
+                        required
+                        min="0"
+                        style={{
+                          width: '100%',
+                          padding: '10px 12px',
+                          borderRadius: '8px',
+                          border: '2px solid #e9d5ff',
+                          fontSize: '14px',
+                          color: '#4b0082',
+                          boxSizing: 'border-box',
+                          transition: 'border-color 0.2s'
+                        }}
+                        onFocus={(e) => e.target.style.borderColor = '#c084fc'}
+                        onBlur={(e) => e.target.style.borderColor = '#e9d5ff'}
+                      />
+                    </div>
+                  </>
+                )}
+              </div>
+
+              {/* Tombol */}
+              <div style={{ display: 'flex', gap: '12px' }}>
                 <button
-                  type="button"
-                  onClick={resetForm}
-                  className="btn-secondary"
-                  style={{ padding: '10px 20px' }}
+                  type="submit"
+                  style={{
+                    padding: '12px 24px',
+                    background: '#c084fc',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '8px',
+                    fontWeight: '600',
+                    fontSize: '14px',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = '#a855f7';
+                    e.currentTarget.style.transform = 'translateY(-2px)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = '#c084fc';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                  }}
                 >
-                  Batal
+                  {isEditing ? '✓ Simpan Perubahan' : '+ Tambah Barang'}
                 </button>
-              )}
-            </div>
-          </form>
-        </div>
+                {isEditing && (
+                  <button
+                    type="button"
+                    onClick={resetForm}
+                    style={{
+                      padding: '12px 24px',
+                      background: '#e9d5ff',
+                      color: '#4b0082',
+                      border: '2px solid #d8b4fe',
+                      borderRadius: '8px',
+                      fontWeight: '600',
+                      fontSize: '14px',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s ease'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = '#d8b4fe';
+                      e.currentTarget.style.transform = 'translateY(-2px)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = '#e9d5ff';
+                      e.currentTarget.style.transform = 'translateY(0)';
+                    }}
+                  >
+                    Batal
+                  </button>
+                )}
+              </div>
+            </form>
+          </div>
 
-        {/* Tabel Barang */}
-        {error ? (
-          <div className="error-message">{error}</div>
-        ) : loading ? (
-          <div style={{ textAlign: 'center', padding: '40px', color: '#64748b' }}>
-            Memuat data barang...
-          </div>
-        ) : barang.length === 0 ? (
-          <div style={{
-            background: 'white',
-            padding: '40px',
-            borderRadius: '12px',
-            textAlign: 'center',
-            color: '#64748b',
-            border: '1px solid #e2e8f0'
-          }}>
-            <div style={{ fontSize: '32px', marginBottom: '8px' }}>📦</div>
-            <p>Belum ada data barang. Tambahkan barang baru untuk memulai.</p>
-          </div>
-        ) : (
-          <TabelBarang
-            barang={barang}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-          />
-        )}
+          {/* Error State */}
+          {error && (
+            <div style={{
+              background: '#fecaca',
+              border: '2px solid #fca5a5',
+              borderRadius: '12px',
+              padding: '16px',
+              color: '#b91c1c',
+              marginBottom: '30px',
+              fontWeight: '500'
+            }}>
+              ❌ {error}
+            </div>
+          )}
+
+          {/* Tabel Barang */}
+          {filteredBarang.length === 0 ? (
+            <div style={{
+              background: 'white',
+              padding: '60px 20px',
+              borderRadius: '16px',
+              textAlign: 'center',
+              color: '#6b21a8',
+              border: '2px dashed #d8b4fe',
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)'
+            }}>
+              <div style={{ fontSize: '48px', marginBottom: '12px' }}>📦</div>
+              <p style={{ margin: 0, fontSize: '16px', fontWeight: '500' }}>
+                {searchTerm ? 'Barang tidak ditemukan' : 'Belum ada data barang. Tambahkan barang baru untuk memulai.'}
+              </p>
+            </div>
+          ) : (
+            <TabelBarang
+              barang={filteredBarang}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+            />
+          )}
+        </div>
       </div>
     </>
   );

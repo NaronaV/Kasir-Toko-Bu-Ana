@@ -5,6 +5,7 @@ import BarangPage from "./pages/BarangPage";
 import TransaksiPage from "./pages/TransaksiPage";
 import RiwayatPage from "./pages/RiwayatPage";
 import RekapPage from "./pages/RekapPage";
+import TestPage from "./pages/TestPage";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/transaksi" element={<TransaksiPage />} />
         <Route path="/riwayat" element={<RiwayatPage />} />
         <Route path="/rekap" element={<RekapPage />} />
+        <Route path="/test" element={<TestPage />} />
       </Routes>
     </BrowserRouter>
   );
